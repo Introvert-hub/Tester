@@ -82,19 +82,42 @@ public:
 	}
 	void pop_head()
 	{
-
+		Node* obj = head;
+		head = head->pNext;
+		delete obj;
+		--size_;
 	}
-	void pop_front()
+	void insertAtPlusOne(Data data, const size_t index)
 	{
-
-	}
-	void insertAt(Data data, const size_t index)
-	{
-
+		size_t counter = 0;
+		Node* current = this->head;
+		while (current->pNext != nullptr)
+		{
+			if (counter == index)
+			{
+				current->pNext = new Node(data, current->pNext);
+				++size_;
+				return;
+			}
+			current = current->pNext;
+			++counter;
+		}
 	}
 	void removeAt(const size_t index)
 	{
-
+		if (index == 0) { pop_head(); }
+		else
+		{
+			Node* prev = this->head;
+			for (size_t i = 0; i < index - 1; ++i)
+			{
+				prev = prev->pNext;
+			}
+			Node* toDelete = prev->pNext;
+			prev->pNext = toDelete->pNext;
+			delete toDelete;
+			--size_;
+		}
 	}
 	Data& operator[](const size_t index)
 	{
@@ -107,8 +130,9 @@ public:
 			++counter;
 		}
 	}
+	Data& getHead() { return head->data; }
 	size_t size() { return size_; }
-	~List() { while (size_)	pup_head(); }
+	~List() { while (size_)	pop_head(); }
 };
 
 
@@ -119,13 +143,23 @@ int main(int argc, char** argv)
 	lst.push_head(-354);
 	lst.push_head(255);
 	lst.push_head(226);
+	lst.pop_head();
+	lst.pop_head();
 	lst.push_fornt(-333);
 	lst.push_fornt(-322);
+	
 	for(size_t i = 0; i < lst.size(); ++i)
 	{
 		std::cout << lst[i] << " ";
 	}
+	std::cout << std::endl;
 
+	lst.insertAtPlusOne(-22, 0);
+	lst.removeAt(1);
+	for (size_t i = 0; i < lst.size(); ++i)
+	{
+		std::cout << lst[i] << " ";
+	}
 	system("pause >> NULL");
 	return 0;
 }
