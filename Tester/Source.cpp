@@ -67,17 +67,32 @@ public:
 	}
 	void push_head(Data data)
 	{
-		if (head == nullptr) {
-			head = new Node(data);
-			++size_; 
-		}
-		else
-		{
 			head = new Node(data, this->head);
 			++size_;
-		}
 	}
 	void push_fornt(Data data)
+	{
+		Node* current = head;
+		while (current->pNext != nullptr)
+		{
+			current = current->pNext;
+		}
+		current->pNext = new Node(data);
+		++size_;
+	}
+	void pop_head()
+	{
+
+	}
+	void pop_front()
+	{
+
+	}
+	void insertAt(Data data, const size_t index)
+	{
+
+	}
+	void removeAt(const size_t index)
 	{
 
 	}
@@ -89,10 +104,13 @@ public:
 		{
 			if (counter == index) return current->data;
 			current = current->pNext;
+			++counter;
 		}
 	}
 	size_t size() { return size_; }
+	~List() { while (size_)	pup_head(); }
 };
+
 
 
 int main(int argc, char** argv)
@@ -101,6 +119,8 @@ int main(int argc, char** argv)
 	lst.push_head(-354);
 	lst.push_head(255);
 	lst.push_head(226);
+	lst.push_fornt(-333);
+	lst.push_fornt(-322);
 	for(size_t i = 0; i < lst.size(); ++i)
 	{
 		std::cout << lst[i] << " ";
