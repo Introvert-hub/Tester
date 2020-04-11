@@ -41,7 +41,6 @@ namespace MY_ADT {
 		};
 	}
 	namespace List {
-
 		template<typename Data>
 		class List
 		{
