@@ -1,25 +1,30 @@
 #include <iostream>
 
+#define ANSI_RED "\x1b[31m"
+#define ANSI_GREEN "\x1b[32m"
+#define ANSI_RESET "\x1b[0m"
 
-namespace MY_ADT {
-	namespace Stack {
-		template <typename Data>
+
+
+namespace my_adt {
+	namespace stack {
+		template <typename T>
 		class Stack
 		{
 		private:
 			struct Node
 			{
-				Data data;
+				T data;
 				Node* pNext;
 			};
 			Node* top_;
 		public:
 			Stack() { top_ = nullptr; }
-			Stack(Data data_) : Stack()
+			Stack(T data_) : Stack()
 			{
 				push(data_);
 			}
-			void push(Data data_)
+			void push(T data_)
 			{
 				Node* obj = new Node;
 				obj->data = data_;
@@ -36,22 +41,22 @@ namespace MY_ADT {
 					top_ = obj;
 				}
 			}
-			Data& top() { return top_->data; }
+			T& top() { return top_->data; }
 			~Stack() { while (top_ != nullptr) pop(); }
 		};
 	}
-	namespace List {
-		template<typename Data>
+	namespace list {
+		template<typename T>
 		class List
 		{
 		private:
 			class Node
 			{
 			public:
-				Data data;
+				T data;
 				Node* pNext;
 
-				Node(Data data = Data(), Node* pNext = nullptr)
+				Node(T data = T(), Node* pNext = nullptr)
 				{
 					this->data = data;
 					this->pNext = pNext;
@@ -65,16 +70,16 @@ namespace MY_ADT {
 				size_ = 0;
 				head = nullptr;
 			}
-			List(Data data_) : List()
+			List(T data_) : List()
 			{
 				push_head(data_);
 			}
-			void push_head(Data data)
+			void push_head(T data)
 			{
 				head = new Node(data, this->head);
 				++size_;
 			}
-			void push_fornt(Data data)
+			void push_fornt(T data)
 			{
 				Node* current = head;
 				while (current->pNext != nullptr)
@@ -91,7 +96,7 @@ namespace MY_ADT {
 				delete obj;
 				--size_;
 			}
-			void insertAtPlusOne(Data data, const size_t index)
+			void insertAtPlusOne(T data, const size_t index)
 			{
 				size_t counter = 0;
 				Node* current = this->head;
@@ -123,7 +128,7 @@ namespace MY_ADT {
 					--size_;
 				}
 			}
-			Data& operator[](const size_t index)
+			T& operator[](const size_t index)
 			{
 				size_t counter = 0;
 				Node* current = head;
@@ -134,22 +139,22 @@ namespace MY_ADT {
 					++counter;
 				}
 			}
-			Data& getHead() { return head->data; }
+			T& getHead() { return head->data; }
 			size_t size() { return size_; }
 			~List() { while (size_)	pop_head(); }
 		};
 	}
-	namespace BTree
+	namespace btree
 	{
-		template<typename Data>
+		template<typename T>
 		struct Node
 		{
-			Data data;
+			T data;
 			Node* left;
 			Node* right;
 		};
 
-		template<typename Data>
+		template<typename T>
 		class BTree
 		{
 		public:
@@ -157,85 +162,85 @@ namespace MY_ADT {
 			~BTree();
 
 			void insert(size_t key);
-			Node<Data>* search(size_t key);
+			Node<T>* search(size_t key);
 			void destroy_tree();
 			void inorder_print();
 			void postorder_print();
 			void preorder_print();
 
 		private:
-			Node<Data>* root;
+			Node<T>* root;
 
-			void destroy_tree(Node<Data>* leaf);
-			void insert(size_t key, Node<Data>* leaf);
-			Node<Data>* search(size_t key, Node<Data>* leaf);
-			void inorder_print(Node<Data>* leaf);
-			void postorder_print(Node<Data>* leaf);
-			void preorder_print(Node<Data>* leaf);
+			void destroy_tree(Node<T>* leaf);
+			void insert(size_t key, Node<T>* leaf);
+			Node<T>* search(size_t key, Node<T>* leaf);
+			void inorder_print(Node<T>* leaf);
+			void postorder_print(Node<T>* leaf);
+			void preorder_print(Node<T>* leaf);
 
 		};
 
 
-		template<typename Data>
-		BTree<Data>::BTree()
+		template<typename T>
+		BTree<T>::BTree()
 		{
 			root = nullptr;
 		}
 
-		template<typename Data>
-		BTree<Data>::~BTree()
+		template<typename T>
+		BTree<T>::~BTree()
 		{
 			destroy_tree();
 		}
 
-		template<typename Data>
-		void BTree<Data>::insert(size_t key)
+		template<typename T>
+		void BTree<T>::insert(size_t key)
 		{
 			if (root != nullptr) insert(key, root);
 			else
 			{
-				root = new Node<Data>;
+				root = new Node<T>;
 				root->data = key;
 				root->left = nullptr;
 				root->right = nullptr;
 			}
 		}
 
-		template<typename Data>
-		Node<Data>* BTree<Data>::search(size_t key)
+		template<typename T>
+		Node<T>* BTree<T>::search(size_t key)
 		{
 			return search(key, root);
 		}
 
-		template<typename Data>
-		void BTree<Data>::destroy_tree()
+		template<typename T>
+		void BTree<T>::destroy_tree()
 		{
 			destroy_tree(root);
 		}
 
-		template<typename Data>
-		void BTree<Data>::inorder_print()
+		template<typename T>
+		void BTree<T>::inorder_print()
 		{
 			inorder_print(root);
 			std::cout << "\n";
 		}
 
-		template<typename Data>
-		void BTree<Data>::postorder_print()
+		template<typename T>
+		void BTree<T>::postorder_print()
 		{
 			postorder_print(root);
 			std::cout << "\n";
 		}
 
-		template<typename Data>
-		void BTree<Data>::preorder_print()
+		template<typename T>
+		void BTree<T>::preorder_print()
 		{
 			preorder_print(root);
 			std::cout << "\n";
 		}
 
-		template<typename Data>
-		void BTree<Data>::destroy_tree(Node<Data>* leaf)
+		template<typename T>
+		void BTree<T>::destroy_tree(Node<T>* leaf)
 		{
 			if (leaf != nullptr)
 			{
@@ -245,14 +250,14 @@ namespace MY_ADT {
 			}
 		}
 
-		template<typename Data>
-		void BTree<Data>::insert(size_t key, Node<Data>* leaf)
+		template<typename T>
+		void BTree<T>::insert(size_t key, Node<T>* leaf)
 		{
 			if (key < leaf->data) {
 				if (leaf->left != nullptr) insert(key, leaf->left);
 
 				else {
-					leaf->left = new Node<Data>;
+					leaf->left = new Node<T>;
 					leaf->left->data = key;
 					leaf->left->left = nullptr;
 					leaf->left->right = nullptr;
@@ -263,7 +268,7 @@ namespace MY_ADT {
 			{
 				if (leaf->right != nullptr) { insert(key, leaf->right); }
 				else {
-					leaf->right = new Node<Data>;
+					leaf->right = new Node<T>;
 					leaf->right->value = key;
 					leaf->right->right = nullptr;
 					leaf->right->left = nullptr;
@@ -275,8 +280,8 @@ namespace MY_ADT {
 
 		}
 
-		template<typename Data>
-		Node<Data>* BTree<Data>::search(size_t key, Node<Data>* leaf)
+		template<typename T>
+		Node<T>* BTree<T>::search(size_t key, Node<T>* leaf)
 		{
 			if (leaf != nullptr)
 			{
@@ -292,8 +297,8 @@ namespace MY_ADT {
 			else return nullptr;
 		}
 
-		template<typename Data>
-		void BTree<Data>::inorder_print(Node<Data>* leaf)
+		template<typename T>
+		void BTree<T>::inorder_print(Node<T>* leaf)
 		{
 			if (leaf != nullptr)
 			{
@@ -303,8 +308,8 @@ namespace MY_ADT {
 			}
 		}
 
-		template<typename Data>
-		void BTree<Data>::postorder_print(Node<Data>* leaf)
+		template<typename T>
+		void BTree<T>::postorder_print(Node<T>* leaf)
 		{
 			if (leaf != nullptr)
 			{
@@ -314,8 +319,8 @@ namespace MY_ADT {
 			}
 		}
 
-		template<typename Data>
-		void BTree<Data>::preorder_print(Node<Data>* leaf)
+		template<typename T>
+		void BTree<T>::preorder_print(Node<T>* leaf)
 		{
 			if (leaf != nullptr)
 			{
